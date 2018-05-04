@@ -1,31 +1,22 @@
-var express = require('express');
-var router = express.Router();
-var jwt = require('express-jwt');
+const express = require(`express`);
+const router = express.Router();
+const jwt = require(`express-jwt`);
 
-var auth = jwt({
+const auth = jwt({
   secret: process.env.JWT_SECRET,
-  userProperty: 'payload'
+  userProperty: `payload`,
 });
 
-var authCtrl = require('../controllers/auth.controller');
-var userCtrl = require('../controllers/user.controller');
-var commonCtrl = require('../controllers/common.controller');
+const authCtrl = require(`../controllers/auth.controller`);
+const userCtrl = require(`../controllers/user.controller`);
 
 // Auth API 
-router.post('/register', authCtrl.register);
-router.post('/login', authCtrl.login);
-
-// Ico API
-router.get('/ico', commonCtrl.getIcons);
-
-// Ico API
-router.get('/defaultgrid', commonCtrl.getDefaultGrid);
+router.post(`/register`, authCtrl.registerUser);
+router.post(`/login`, authCtrl.loginUser);
 
 // User API
-router.get('/user', auth, userCtrl.profileRead);
+router.get(`/user`, auth, userCtrl.getUserInfo);
 
-// User Widget API
-router.put('/user', auth, userCtrl.updateWidgets);
+router.get(`/test`, userCtrl.getTestInfo);
 
 module.exports = router;
-

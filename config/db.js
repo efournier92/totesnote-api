@@ -1,51 +1,49 @@
-////////////////
 // DEPENDENCIES
-var mongoose = require('mongoose');
-var gracefulShutdown;
+const mongoose = require(`mongoose`);
+let gracefulShutdown;
 
-////////////
 // MONGOOSE 
-var dbURI = process.env.MONGODB_URI || 'mongodb://localhost/NerveCenter';
+const dbURI = process.env.MONGODB_URI || `mongodb://localhost/totesnote`;
 mongoose.connect(dbURI);
 
-////////////////////
 // CONNECTION EVENTS
-mongoose.connection.on('connected', function () {
-  console.log('Mongoose connected to ' + dbURI);
-});
-mongoose.connection.on('error', function (err) {
-  console.log('Mongoose connection error: ' + err);
-});
-mongoose.connection.on('disconnected', function () {
-  console.log('Mongoose disconnected');
+mongoose.connection.on(`connected`, function logMongooseConnected() {
+  console.log(`Mongoose connected to ` + dbURI);
 });
 
-//////////////////////////
+mongoose.connection.on(`disconnected`, function logMongooseDisconnected() {
+  console.log(`Mongoose disconnected`);
+});
+
+mongoose.connection.on(`error`, function logMongooseConnectionError(err) {
+  console.log(`Mongoose connection error: ` + err);
+});
+
 // APP TERMINATION EVENTS
-gracefulShutdown = function (msg, callback) {
-  mongoose.connection.close(function () {
-    console.log('Mongoose disconnected through ' + msg);
+gracefulShutdown = function gracefulShutdown(msg, callback) {
+  mongoose.connection.close(function closeConnection() {
+    console.log(`Mongoose disconnected through ` + msg);
     callback();
   });
 };
 
-process.once('SIGUSR2', function () {
-  gracefulShutdown('nodemon restart', function () {
-    process.kill(process.pid, 'SIGUSR2');
+process.once(`SIGUSR2`, function sigUsr2() {
+  gracefulShutdown(`nodemon restart`, function nodemonResart() {
+    process.kill(process.pid, `SIGUSR2`);
   });
 });
-process.on('SIGINT', function () {
-  gracefulShutdown('app termination', function () {
+process.on(`SIGINT`, function sigInit() {
+  gracefulShutdown(`app termination`, function appTermination() {
     process.exit(0);
   });
 });
-process.on('SIGTERM', function () {
-  gracefulShutdown('Heroku app termination', function () {
+process.on(`SIGTERM`, function sigTerm() {
+  gracefulShutdown(`Heroku app termination`, function herokuAppTermination() {
     process.exit(0);
   });
 });
 
-//////////
 // MODELS
-require('../models/user.model');
-
+require(`../models/user.model`);
+require(`../models/note.model`);
+require(`../models/noteVersion.model`);

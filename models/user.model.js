@@ -1,29 +1,27 @@
-var mongoose = require( 'mongoose' );
-var crypto = require('crypto');
-var jwt = require('jsonwebtoken');
+const mongoose = require( `mongoose` );
+const Schema = mongoose.Schema;
+const crypto = require(`crypto`);
+const jwt = require(`jsonwebtoken`);
 
-var userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    unique: true,
-    required: true
-  },
+const userSchema = new mongoose.Schema({
+  _id: Schema.Types.ObjectId,
+  email: { type: String, unique: true, required: true, },
   hash: String,
-  salt: String
+  salt: String,
 });
 
-userSchema.methods.setPassword = function (password){
-  this.salt = crypto.randomBytes(16).toString('hex');
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+userSchema.methods.setPassword = function setPassword(password){
+  this.salt = crypto.randomBytes(16).toString(`hex`);
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString(`hex`);
 };
 
-userSchema.methods.validPassword = function (password) {
-  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+userSchema.methods.validatePassword = function validatePassword(password) {
+  let hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString(`hex`);
   return this.hash === hash;
 };
 
-userSchema.methods.generateJwt = function () {
-  var expiry = new Date();
+userSchema.methods.generateJwt = function generateJwt() {
+  let expiry = new Date();
   expiry.setDate(expiry.getDate() + 7);
 
   return jwt.sign({
@@ -33,5 +31,4 @@ userSchema.methods.generateJwt = function () {
   }, process.env.JWT_SECRET);
 };
 
-mongoose.model('User', userSchema);
-
+mongoose.model(`User`, userSchema);
