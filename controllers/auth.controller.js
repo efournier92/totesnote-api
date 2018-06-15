@@ -28,6 +28,7 @@ module.exports.registerUser = function registerUser(req, res) {
       "token" : token,
     });
   });
+
 };
 
 module.exports.loginUser = function loginUser(req, res) {
@@ -60,3 +61,4 @@ module.exports.loginUser = function loginUser(req, res) {
     }
   })(req, res);
 };
+
