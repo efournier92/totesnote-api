@@ -15,7 +15,13 @@ module.exports.getUserInfo = function getUserInfo(req, res) {
 };
 
 module.exports.getTestInfo = function getTestInfo(req, res) {
-  res.status(200).send('YAY!');
+  let xObj = {
+    "test": "test",
+    "test": "test",
+    "test": "test"
+  };
+  let strngObj = JSON.stringify(xObj);
+  res.status(200).send(strngObj);
 };
 // module.exports.updateWidgets = function updateWid(req, res) {
 //   if (!req.payload._id) {
