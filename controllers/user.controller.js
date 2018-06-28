@@ -15,30 +15,47 @@ module.exports.getUserInfo = function getUserInfo(req, res) {
 };
 
 module.exports.getTestInfo = function getTestInfo(req, res) {
-  let xObj = {
-    "test": "test",
-    "test": "test",
-    "test": "test"
-  };
-  let strngObj = JSON.stringify(xObj);
-  res.status(200).send(strngObj);
-};
-// module.exports.updateWidgets = function updateWid(req, res) {
-//   if (!req.payload._id) {
-//     res.status(401).json({
-//       "message" : "Unauthorized: Private Profile"
-//     });
-//   } else {
-//     User.findById(req.payload._id, function (err, user) {
-//       if (err) return handleError(err);
+  const defaultArray = [
+    {
+      "type": "link-widget",
+      "sizeX": 1,
+      "sizeY": 1,
+      "url": "https://www.google.com/",
+      "icon": "img/ico/A001_Google.png"
+    }, {
+      "type": "link-widget",
+      "sizeX": 1,
+      "sizeY": 1,
+      "url": "https://www.youtube.com/",
+      "icon": "img/ico/A002_YouTube.png"
+    }, {
+      "type": "link-widget",
+      "sizeX": 1,
+      "sizeY": 1,
+      "url": "https://www.facebook.com/",
+      "icon": "img/ico/A003_Facebook.png"
+    }
+  ];
 
-//       user.widgetsLg = JSON.stringify(req.body[0]);
-//       user.widgetsSm = JSON.stringify(req.body[1]);
+      let strngObj = JSON.stringify(defaultArray);
+      res.status(200).send(strngObj);
+    };
+  // module.exports.updateWidgets = function updateWid(req, res) {
+  //   if (!req.payload._id) {
+  //     res.status(401).json({
+  //       "message" : "Unauthorized: Private Profile"
+  //     });
+  //   } else {
+  //     User.findById(req.payload._id, function (err, user) {
+  //       if (err) return handleError(err);
 
-//       user.save(function (err, updatedUser) {
-//         if (err) return handleError(err);
-//         res.send(updatedUser);
-//       });
-//     });
-//   };
-// };
+  //       user.widgetsLg = JSON.stringify(req.body[0]);
+  //       user.widgetsSm = JSON.stringify(req.body[1]);
+
+  //       user.save(function (err, updatedUser) {
+  //         if (err) return handleError(err);
+  //         res.send(updatedUser);
+  //       });
+  //     });
+  //   };
+  // };
