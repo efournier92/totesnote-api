@@ -3,8 +3,8 @@ const mongoose = require(`mongoose`);
 let gracefulShutdown;
 
 // MONGOOSE 
-const dbURI = process.env.MONGODB_URI || `mongodb://localhost/totesnote`;
-mongoose.connect(dbURI);
+const dbURI = process.env.MONGODB_URI || `mongodb://localhost:27017/totesnote`;
+mongoose.connect(dbURI, { useNewUrlParser: true });
 
 // CONNECTION EVENTS
 mongoose.connection.on(`connected`, function logMongooseConnected() {
@@ -47,3 +47,4 @@ process.on(`SIGTERM`, function sigTerm() {
 require(`../models/user.model`);
 require(`../models/note.model`);
 require(`../models/noteVersion.model`);
+
