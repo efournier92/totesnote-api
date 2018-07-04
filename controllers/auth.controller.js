@@ -40,7 +40,7 @@ module.exports.loginUser = function loginUser(req, res) {
   }
 
   passport.authenticate(`local`, function passportAuthenticate(err, user, info) {
-    let oken;
+    let token;
 
     // If Passport throws an error
     if (err) {

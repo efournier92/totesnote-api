@@ -11,7 +11,7 @@ const authCtrl = require(`../controllers/auth.controller`);
 const userCtrl = require(`../controllers/user.controller`);
 
 // Auth API 
-// router.post(`/register`, authCtrl.registerUser);
+router.post(`/register`, authCtrl.registerUser);
 // router.post(`/login`, authCtrl.loginUser);
 
 // // User API
