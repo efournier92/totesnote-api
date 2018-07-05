@@ -12,7 +12,7 @@ const userCtrl = require(`../controllers/user.controller`);
 
 // Auth API 
 router.post(`/register`, authCtrl.registerUser);
-// router.post(`/login`, authCtrl.loginUser);
+router.post(`/login`, authCtrl.loginUser);
 
 // // User API
 // router.get(`/user`, auth, userCtrl.getUserInfo);
