@@ -8,7 +8,6 @@ const sendJSONresponse = function sendJSONresponse(res, status, content) {
 };
 
 module.exports.registerUser = function registerUser(req, res) {
-
   if(!req.body.email || !req.body.password) {
     sendJSONresponse(res, 400, {
       "message": "All fields required",
