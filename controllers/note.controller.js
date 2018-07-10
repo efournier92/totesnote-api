@@ -2,6 +2,7 @@ let mongoose = require('mongoose');
 let Note = mongoose.model('Note');
 
 module.exports.createNote = function createNote(req, res) {
+  let note = new Note;
   if (!req.payload._id) {
     res.status(401).json({
       "message" : "Unauthorized: Private Profile",
