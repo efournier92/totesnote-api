@@ -1,7 +1,9 @@
 let mongoose = require('mongoose');
+let jwt_decode = require('jwt-decode');
 let User = mongoose.model('User');
+let Note = mongoose.model('Note');
 
-module.exports.getUserNotes = function getUserInfo(req, res) {
+module.exports.getUserInfo = function getUserInfo(req, res) {
   if (!req.payload._id) {
     res.status(401).json({
       "message" : "Unauthorized: Private Profile",
@@ -14,12 +16,18 @@ module.exports.getUserNotes = function getUserInfo(req, res) {
   }
 };
 
-module.exports.getTest = function getTest(req, res) {
-  console.log("response.json sets the appropriate header and performs JSON.stringify");
-  res.json({ 
-    anObject: { item1: "item1val", item2: "item2val" }, 
-    anArray: ["item1", "item2"], 
-    another: "item"
-  });
+module.exports.getUserNotes = function getUserNotes(req, res) {
+  let authToken = req.headers.auth;
+  let user = jwt_decode(authToken);
+  if (!user._id) {
+    res.status(401).json({
+      "message" : "Unauthorized: Private Profile",
+    });
+  } else {
+    Note.find({_owner: user._id}, function(err, notes) {
+      res.status(200).json({
+        "notes": notes
+      });
+    });
+  }
 };
-

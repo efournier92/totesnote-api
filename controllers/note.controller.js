@@ -1,19 +1,52 @@
 let mongoose = require('mongoose');
+let jwt_decode = require('jwt-decode');
+var User = mongoose.model('User');
 let Note = mongoose.model('Note');
+let NoteVersion = mongoose.model('NoteVersion');
 
-module.exports.createNote = function createNote(req, res) {
-  let note = new Note;
-  if (!req.payload._id) {
+module.exports.saveNote = function (req, res) {
+  if (!req.headers.auth) {
     res.status(401).json({
-      "message" : "Unauthorized: Private Profile",
+      "message" : "Unauthorized: Private Profile"
     });
   } else {
-    User.findById(req.payload._id)
-      .exec(function findUser(err, user) {
-        res.status(200).json(user);
+    let authToken = req.headers.auth;
+    let user = jwt_decode(authToken);
+    User.findById(user._id, function (err, user) {
+      if (err) return handleError(err);
+      let reqNote = req.body; 
+      let note;
+      if (!reqNote._id) {
+        note = new Note({
+          _owner: user._id,
+          created: Date.now(),
+          isTrashed: false,
+        });
+      } else {
+        note = reqNote; 
+      }
+
+      let noteVersion = new NoteVersion({
+        _note: note._id,
+        title: reqNote.title,
+        body: reqNote.body,
       });
-  }
+
+      noteVersion.save();
+
+      note.versions.unshift(noteVersion.id);
+
+      note.save(function saveNote(err) {
+        res.status(200);
+        res.json({
+          "note": note,
+          "noteVersion": noteVersion,
+        });
+      });
+    });
+  };
 };
+
 
 module.exports.getTest = function getTest(req, res) {
   console.log("response.json sets the appropriate header and performs JSON.stringify");
