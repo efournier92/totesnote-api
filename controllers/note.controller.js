@@ -34,7 +34,11 @@ module.exports.saveNote = function (req, res) {
 
       noteVersion.save();
 
-      note.versions.unshift(noteVersion.id);
+      note.versions.unshift(noteVersion._id);
+      note.currentVersion = {
+        title: reqNote.title,
+        body: reqNote.body,
+      };
 
       note.save(function saveNote(err) {
         res.status(200);

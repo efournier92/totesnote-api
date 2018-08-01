@@ -26,8 +26,10 @@ module.exports.getUserNotes = function getUserNotes(req, res) {
   } else {
     Note.find({_owner: user._id}, function(err, notes) {
       res.status(200).json({
-        "notes": notes
+        "notes": notes,
       });
     });
   }
 };
+
+
