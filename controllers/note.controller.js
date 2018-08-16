@@ -40,13 +40,25 @@ module.exports.saveNote = function (req, res) {
         body: reqNote.body,
       };
 
-      note.save(function saveNote(err) {
-        res.status(200);
-        res.json({
-          "note": note,
-          "noteVersion": noteVersion,
+
+      if (!reqNote._id) {
+        note.save(function saveNote(err) {
+          res.status(200);
+          res.json({
+            "note": note,
+            "noteVersion": noteVersion,
+          });
         });
-      });
+      } else {
+        Note.findById(reqNote._id, function (err, note) {
+          if (err) return handleError(err);
+
+          note.save(function (err, updatedNote) {
+            if (err) return handleError(err);
+            res.send(updatedNote);
+          });
+        }); 
+      }
     });
   };
 };
