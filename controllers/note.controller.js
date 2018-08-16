@@ -26,20 +26,16 @@ module.exports.saveNote = function (req, res) {
         note = reqNote; 
       }
 
-      let noteVersion = new NoteVersion({
-        _note: note._id,
-        title: reqNote.title,
-        body: reqNote.body,
-      });
+      class NoteVersion {
+        constructor(title, body) {
+          this.title = title;
+          this.body = body;
+        }
+      }
 
-      noteVersion.save();
+      noteVersion = new NoteVersion(reqNote.title, reqNote.body);
 
-      note.versions.unshift(noteVersion._id);
-      note.currentVersion = {
-        title: reqNote.title,
-        body: reqNote.body,
-      };
-
+      note.versions.unshift(noteVersion);
 
       if (!reqNote._id) {
         note.save(function saveNote(err) {
