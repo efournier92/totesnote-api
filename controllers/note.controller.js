@@ -19,7 +19,7 @@ module.exports.saveNote = function (req, res) {
       if (!reqNote._id) {
         note = new Note({
           _owner: user._id,
-          created: Date.now(),
+          created: new Date(),
           isTrashed: false,
         });
       } else {
@@ -27,13 +27,13 @@ module.exports.saveNote = function (req, res) {
       }
 
       class NoteVersion {
-        constructor(title, body) {
-          this.title = title;
-          this.body = body;
+        constructor(content) {
+          this.content = content;
+          this.time = new Date();
         }
       }
 
-      noteVersion = new NoteVersion(reqNote.title, reqNote.body);
+      noteVersion = new NoteVersion(reqNote.content);
 
       note.versions.unshift(noteVersion);
 
