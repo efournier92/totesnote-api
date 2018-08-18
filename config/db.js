@@ -46,5 +46,4 @@ process.on(`SIGTERM`, function sigTerm() {
 // MODELS
 require(`../models/user.model`);
 require(`../models/note.model`);
-require(`../models/noteVersion.model`);
 

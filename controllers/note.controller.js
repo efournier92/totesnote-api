@@ -2,7 +2,6 @@ let mongoose = require('mongoose');
 let jwt_decode = require('jwt-decode');
 var User = mongoose.model('User');
 let Note = mongoose.model('Note');
-let NoteVersion = mongoose.model('NoteVersion');
 
 module.exports.saveNote = function (req, res) {
   if (!req.headers.auth) {
