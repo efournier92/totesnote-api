@@ -13,7 +13,7 @@ module.exports.saveNote = function (req, res) {
     let user = jwt_decode(authToken);
     User.findById(user._id, function (err, user) {
       if (err) return handleError(err);
-      let reqNote = req.content; 
+      let reqNote = req.body; 
       let note;
       if (!reqNote._id) {
         note = new Note({
